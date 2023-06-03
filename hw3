@@ -1,0 +1,50 @@
+Итеративный подход:
+
+function hanoiTowerIterative(n, source, auxiliary, target) {
+  var stack = [];
+  var moves = Math.pow(2, n) - 1;
+
+  // Заполняем стек начальными значениями
+  for (var i = n; i >= 1; i--) {
+    stack.push({ n: i, source, auxiliary, target });
+  }
+
+  for (var i = 1; i <= moves; i++) {
+    var move = stack.pop();
+    if (i % 2 === 1) {
+      // Нечетный шаг - перемещение диска
+      console.log(`Move disk ${move.n} from ${move.source} to ${move.target}`);
+    } else {
+      // Четный шаг - перемещение диска
+      console.log(`Move disk ${move.n} from ${move.source} to ${move.auxiliary}`);
+      // Добавляем следующие два перемещения в стек
+      stack.push({ n: move.n - 1, source: move.target, auxiliary: move.source, target: move.auxiliary });
+      stack.push({ n: move.n - 1, source: move.source, auxiliary: move.auxiliary, target: move.target });
+    }
+  }
+}
+
+// Пример вызова для трех дисков
+hanoiTowerIterative(3, 'Left', 'Middle', 'Right');
+
+
+
+Рекурсивный подход:
+
+function hanoiTowerRecursive(n, source, auxiliary, target) {
+  if (n === 1) {
+    // Базовый случай - перемещение диска
+    console.log(`Move disk 1 from ${source} to ${target}`);
+    return;
+  }
+
+  // Рекурсивно перемещаем n-1 дисков с исходного стержня на вспомогательный
+  hanoiTowerRecursive(n - 1, source, target, auxiliary);
+  // Перемещаем оставшийся самый большой диск с исходного стержня на целевой
+  console.log(`Move disk ${n} from ${source} to ${target}`);
+  // Рекурсивно перемещаем n-1 дисков с вспомогательного стержня на целевой
+  hanoiTowerRecursive(n - 1, auxiliary, source, target);
+}
+
+// Пример вызова для трех дисков
+hanoiTowerRecursive(3, 'Left', 'Middle', 'Right');
